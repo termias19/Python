@@ -1,0 +1,30 @@
+import speech_recognition as sr
+import wikipedia
+
+# Set up the speech recognition
+r = sr.Recognizer()
+
+# Set up a microphone to use for the voice search
+mic = sr.Microphone()
+
+# Prompt the user to speak their search query
+print("Say your search query:")
+
+# Listen for the user's voice and recognize it
+with mic as source:
+    audio = r.listen(source)
+
+# Try to recognize the spoken text
+try:
+    # Convert the recognized speech to text
+    query = r.recognize_google(audio)
+    print(f"You said: {query}")
+    
+    # Use the Wikipedia API to search for the query
+    results = wikipedia.summary(query, sentences=3)
+    print(results)
+
+except sr.UnknownValueError:
+    print("Sorry, I couldn't understand what you said.")
+except sr.RequestError as e:
+    print("Error requesting results from Google Speech Recognition service: {0}".format(e))
